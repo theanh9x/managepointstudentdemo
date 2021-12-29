@@ -1,0 +1,1356 @@
+components:
+    responses:
+        # Descriptions of common responses
+        BadRequestException:
+            description: Request body not meet require
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        NotAuthorizedException:
+            description: Authentication failure
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        ForbiddenException:
+            description: Not permitted to access
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        NotFoundException:
+            description: The specified resource was not found
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        NotAllowedException:
+            description: HTTP method not supported
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        NotAcceptableException:
+            description: Client media type requested not supported
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        NotSupportedException:
+            description: Client posted media type not supported
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        InternalServerErrorException:
+            description: Internal Server Error
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+        ServiceUnavailableException:
+            description: Server is temporarily unavailable or busy
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+                application/xml:
+                    schema:
+                        $ref: "#/components/schemas/Error"
+    schemas:
+        Student:
+            type : object
+            properties:
+                studentId:
+                    type: integer
+                    format: int64
+                fullName:
+                    type: string
+                email:
+                    type: string
+                bod:
+                    type: string
+                sex:
+                    type: boolean
+                phone:
+                    type: string
+                bop:
+                    type: integer
+                ethnic:
+                    type: string
+                gradeId:
+                    type: integer
+                    format: int64
+                status:
+                    type: string
+
+                roles:
+                    type: string
+                    description: "Role student"
+
+                categoryGrade:
+                    $ref: '#/components/schemas/Grade'
+
+
+        Grade:
+            type: object
+            description: A very simple grade
+            properties:
+                gradeId:
+                    type: integer
+                    format: int64
+
+                name:
+                    type: string
+                    description: "Name Type of grade"
+
+                parentId:
+                    type: integer
+                    format: int64
+
+        Semester:
+            type: object
+
+            description: A very simple Semester
+            properties:
+                semesterId:
+                    type: integer
+                    format: int64
+
+                name:
+                    type: string
+                    description: "type Semester"
+                    
+                    
+        LearnPart:
+            type: object
+
+            description: A very simple Learn Part
+            properties:
+                subjectcodeId:
+                    type: integer
+                    format: int64
+
+                name:
+                    type: string
+                    description: "type  LearnPart"
+                    
+                numberofcredits:
+                    type: integer
+                    format: int64
+                    description: "12"
+                    
+                semesterId:
+                    type: integer
+                    format: int64
+                
+
+
+        PointLearnPart:
+            type: object
+
+            description: A very simple Point Learn Part
+            properties:
+                pointlearnpartId:
+                    type: integer
+                    format: int64
+
+                studentId:
+                    type: integer
+                    format: int64
+                    description: "type category"
+                
+                subjectcodeId:
+                    type: integer
+                    format: int64
+                    description: "type category"
+
+                point1:
+                    type: number
+                    format: double
+                    description: "6.0"
+
+                point2:
+                    type: number
+                    format: double
+                    description: "8.0"
+
+        Error:
+            type: object
+            properties:
+                status:
+                    format: int64
+                    readOnly: true
+                    type: integer
+                    example: 401
+                code:
+                    type: string
+                    example: NL-100
+                message:
+                    type: string
+                developerMessage:
+                    type: string
+            required:
+                - code
+                - message
+info:
+    description: "StudentRestBuilder REST API"
+    license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    title: "StudentRestBuilder"
+    version: v1.0
+    contact:
+      name: Nguyen Linh
+      url: 'http://www.nguyenlinh.net'
+      email: nguyenlinh@gmail.com
+openapi: 3.0.1
+paths:
+    "/students/{studentId}/":
+        get:
+            operationId: getDetailStudent
+            summary: Get student by ID
+            parameters:
+                - in: path
+                  name: studentId
+                  description: Student ID
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Student"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Student"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Student" ]
+        delete:
+            operationId: deleteStudent
+            summary: Delete Student by ID
+            parameters:
+                - in: path
+                  name: studentId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                204:
+                    content:
+                        application/json: { }
+                        application/xml: { }
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Student" ]
+        put:
+            operationId: putStudent
+            summary: Update Student by ID
+            parameters:
+                - in: path
+                  name: studentId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Student"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Student"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Student"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Student"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Student" ]
+    "/students":
+        get:
+            operationId: getAllStudent
+            summary: Get list student
+            description: Retrieves the Students. Results can be paginated, filtered, searched, and sorted.
+            tags: [ "Student" ]
+            parameters:
+                - in: query
+                  name: filter
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+                - in: query
+                  name: search
+                  schema:
+                      type: string
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: A paged array of pets
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Student"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Student"
+                                type: array
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+        post:
+            operationId: addStudent
+            summary: Add new Student
+
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Student"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Student"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Student"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Student"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Student" ]
+            
+    #Grade
+    "/grades/{gradeId}/":
+        get:
+            operationId: getDetailGrade
+            summary: Get grade by ID
+            parameters:
+                - in: path
+                  name: gradeId
+                  description: Grade ID
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Grade"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Grade"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Grade" ]
+        delete:
+            operationId: deleteGrade
+            summary: Delete Grade by ID
+            parameters:
+                - in: path
+                  name: gradeId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                204:
+                    content:
+                        application/json: { }
+                        application/xml: { }
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Grade" ]
+        put:
+            operationId: putGrade
+            summary: Update Grade by ID
+            parameters:
+                - in: path
+                  name: gradeId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Grade"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Grade"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Grade"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Grade"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Grade" ]
+    "/grades":
+        get:
+            operationId: getAllGrade
+            summary: Get list grade
+            description: Retrieves the Grades. Results can be paginated, filtered, searched, and sorted.
+            tags: [ "Grade" ]
+            parameters:
+                - in: query
+                  name: filter
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+                - in: query
+                  name: search
+                  schema:
+                      type: string
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: A paged array of pets
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Grade"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Grade"
+                                type: array
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+        post:
+            operationId: addGrade
+            summary: Add new Grade
+
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Grade"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Grade"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Grade"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Grade"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Grade" ]
+            
+    #Semester
+    "/semesters/{semesterId}/":
+        get:
+            operationId: getDetailSemester
+            summary: Get semester by ID
+            parameters:
+                - in: path
+                  name: semesterId
+                  description: Semester ID
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Semester"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Semester"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Semester" ]
+        delete:
+            operationId: deleteSemester
+            summary: Delete Semester by ID
+            parameters:
+                - in: path
+                  name: semesterId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                204:
+                    content:
+                        application/json: { }
+                        application/xml: { }
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Semester" ]
+        put:
+            operationId: putSemester
+            summary: Update Semester by ID
+            parameters:
+                - in: path
+                  name: semesterId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Semester"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Semester"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Semester"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/Semester"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Semester" ]
+    "/semesters":
+        get:
+            operationId: getAllSemester
+            summary: Get list semester
+            description: Retrieves the Semesters. Results can be paginated, filtered, searched, and sorted.
+            tags: [ "Semester" ]
+            parameters:
+                - in: query
+                  name: filter
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+                - in: query
+                  name: search
+                  schema:
+                      type: string
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: A paged array of pets
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Semester"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Semester"
+                                type: array
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+        post:
+            operationId: addSemester
+            summary: Add new Semester
+
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Semester"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/Semester"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/LearnPart"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/LearnPart"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "Semester" ]
+            
+    #LearnPart
+    "/learnparts/{subjectcodeId}/":
+        get:
+            operationId: getDetailLearnpart
+            summary: Get subject code by ID
+            parameters:
+                - in: path
+                  name: subjectcodeId
+                  description: Subject Code ID
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/LearnPart"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/LearnPart"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "LearnPart" ]
+        delete:
+            operationId: deleteLearnPart
+            summary: Delete LearnPart by ID
+            parameters:
+                - in: path
+                  name: subjectcodeId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                204:
+                    content:
+                        application/json: { }
+                        application/xml: { }
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "LearnPart" ]
+        put:
+            operationId: putLearnPart
+            summary: Update LearnPart by ID
+            parameters:
+                - in: path
+                  name: subjectcodeId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/LearnPart"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/LearnPart"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/LearnPart"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/LearnPart"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "LearnPart" ]
+    "/learnparts":
+        get:
+            operationId: getAllLearnParts
+            summary: Get list LearnPart
+            description: Retrieves the LearnParts. Results can be paginated, filtered, searched, and sorted.
+            tags: [ "LearnPart" ]
+            parameters:
+                - in: query
+                  name: filter
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+                - in: query
+                  name: search
+                  schema:
+                      type: string
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: A paged array of pets
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LearnPart"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LearnPart"
+                                type: array
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+        post:
+            operationId: addLearnPart
+            summary: Add new LearnPart
+
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/LearnPart"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/LearnPart"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/LearnPart"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/LearnPart"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "LearnPart" ]
+            
+    #PointLearnPart
+    "/pointlearnparts/{pointlearnpartId}/":
+        get:
+            operationId: getDetailPointLearnPart
+            summary: Get Point Learn Part by ID
+            parameters:
+                - in: path
+                  name: pointlearnpartId
+                  description: Point Learn Part ID
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/PointLearnPart"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/PointLearnPart"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "PointLearnPart" ]
+        delete:
+            operationId: deletePointLearnPart
+            summary: Delete PointLearnPart by ID
+            parameters:
+                - in: path
+                  name: pointlearnpartId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            responses:
+                204:
+                    content:
+                        application/json: { }
+                        application/xml: { }
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "PointLearnPart" ]
+        put:
+            operationId: putPointLearnPart
+            summary: Update PointLearnPart by ID
+            parameters:
+                - in: path
+                  name: pointlearnpartId
+                  required: true
+                  schema:
+                      type: integer
+                      format: int64
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/PointLearnPart"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/PointLearnPart"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/PointLearnPart"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/PointLearnPart"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "PointLearnPart" ]
+    "/pointlearnparts":
+        get:
+            operationId: getAllPointLearnParts
+            summary: Get list PointLearnPart
+            description: Retrieves the PointLearnParts. Results can be paginated, filtered, searched, and sorted.
+            tags: [ "PointLearnPart" ]
+            parameters:
+                - in: query
+                  name: filter
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+                - in: query
+                  name: search
+                  schema:
+                      type: string
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: A paged array of pets
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/PointLearnPart"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/PointLearnPart"
+                                type: array
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+        post:
+            operationId: addPointLearnPart
+            summary: Add new PointLearnPart
+
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/PointLearnPart"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/PointLearnPart"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/PointLearnPart"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/PointLearnPart"
+                    description: ""
+                400:
+                    $ref: "#/components/responses/BadRequestException"
+                401:
+                    $ref: "#/components/responses/NotAuthorizedException"
+                403:
+                    $ref: "#/components/responses/ForbiddenException"
+                404:
+                    $ref: "#/components/responses/NotFoundException"
+                405:
+                    $ref: "#/components/responses/NotAllowedException"
+                406:
+                    $ref: "#/components/responses/NotAcceptableException"
+                415:
+                    $ref: "#/components/responses/NotSupportedException"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorException"
+                503:
+                    $ref: "#/components/responses/ServiceUnavailableException"
+            tags: [ "PointLearnPart" ]

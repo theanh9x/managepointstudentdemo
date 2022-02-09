@@ -1,7 +1,7 @@
 FROM maven:3.5-jdk-8-alpine AS BUILD
 WORKDIR /home/app
-COPY managepointstudent-api /home/apps/managepointstudent/managepointstudent-api
-COPY managepointstudent-client /home/apps/managepointstudent/managepointstudent-client
+#COPY managepointstudent-api /home/apps/managepointstudent/managepointstudent-api
+#COPY managepointstudent-client /home/apps/managepointstudent/managepointstudent-client
 COPY managepointstudent-service /home/apps/managepointstudent/managepointstudent-service
 COPY authz /home/apps/authz
 

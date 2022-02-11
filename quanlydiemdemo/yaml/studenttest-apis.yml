@@ -290,6 +290,13 @@ paths:
           schema:
             type: integer
             format: int64
+        - in: path
+          name: gradeId
+          description: studentId
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         204:
           content:
@@ -321,6 +328,13 @@ paths:
       parameters:
         - in: path
           name: studentId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: gradeId
+          description: studentId
           required: true
           schema:
             type: integer
